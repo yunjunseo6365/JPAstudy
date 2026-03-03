@@ -12,7 +12,7 @@
 <div class="card" th:each="i : ${notices}">
     <div>
         <h4 th:text="${i.noticeTitle}">바지</h4>
-        <p th:text="${i.date != null ? #temporals.format(i.date, 'yyyy-MM-dd') : '날짜 없음'}">7억</p>
+        <p th:text="${#temporals.format(i.date, 'yyyy-MM-dd')}"></p>
     </div>
 </div>
 </body>

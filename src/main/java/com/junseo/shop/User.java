@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @Getter
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto Increment 기능
-    private Integer id;
+    private Long id;
     private String name;
     private Integer age;
 
