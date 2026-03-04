@@ -2,7 +2,6 @@ package com.junseo.shop;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,12 +11,12 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-
     public List<Item> viewList(){
         return itemRepository.findAll();
     }
 
     public void saveItem(String title, Integer price) {
+        // 간단한 에러 처리(터미널 에러 확인용)
         if(title == null || title.length() > 100){
             throw new IllegalArgumentException("제목이 너무 길거나 비어있습니다.");
         }

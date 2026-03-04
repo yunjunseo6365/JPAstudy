@@ -17,10 +17,11 @@ public class ItemController {
     private final ItemService itemService;
 
 
-    // lombok 안쓰면 이렇게 써야함. @RequiredArgsConstructor 사용하면 없어도 됨
+    // lombok 안쓰면 이렇게 써야함. Dependency Injection
     //    @Autowired
     //    public ItemController(ItemRepository itemRepository) {
     //        this.itemRepository = itemRepository;
+    //        this.itemService = itemService;
     //    }
 
     @GetMapping("/list")
