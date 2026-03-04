@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이템 수정</title>
+    <link href="/main.css" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{ nav.html::navbar }"></div>
+
+<!--    <form>은 GET이랑 POST만 가능-->
+    <form action="/edit" method="POST">
+        <h3>아이템 수정</h3>
+        <input name="id" th:value="${item.id}" style="display:none">
+        <input name="title" th:value="${item.title}">
+        <input name="price" th:value="${item.price}">
+        <button type="submit">전송</button>
+        <a th:href="@{/list}">취소</a>
+    </form>
+</body>
+</html>

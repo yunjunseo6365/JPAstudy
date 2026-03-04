@@ -25,14 +25,14 @@ public class ItemController {
     //    }
 
     @GetMapping("/list")
-    String list(Model model) {
+    public String list(Model model) {
         List<Item> result = itemService.viewList(); // 테이블 모든 데이터 가져옴, List자료형으로 가져옴(Object 형태임)
         model.addAttribute("items", result);
         return "list.html";
     }
 
     @GetMapping("/write")
-    String write(Model model) {
+    public String write(Model model) {
         return "write.html";
     }
 
@@ -61,7 +61,7 @@ public class ItemController {
 //    }
 
     @PostMapping("/add")
-    String addPost(String title, Integer price){
+    public String addPost(String title, Integer price){
 
 //        Item item = new Item();
 //        item.setTitle(title);
@@ -91,7 +91,7 @@ public class ItemController {
 //        }
 //    }
     @GetMapping("/detail/{id}") // url파라미터
-    String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, Model model) {
             // Optional : Optional은 null일 수도 있고 아닐 수도 있다는 타입
             Optional<Item> result = itemService.itemId(id);
             // result안에 값들이 비어있을 수 있으므로 if문으로 한번 걸러주는것이 관례임
@@ -102,4 +102,22 @@ public class ItemController {
                 return "redirect:/list";
             }
         }
+
+    // 수정폼으로 이동 showUpdateForm
+    @GetMapping("/edit/{id}")
+    public String showUpdateForm(@PathVariable Long id, Model model) {
+        Optional<Item> result = itemService.itemId(id);
+        if (result.isPresent()) {
+            model.addAttribute("item", result.get());
+            return "edit.html";
+        } else {
+            return "redirect:/list";
+        }
+    }
+
+    @PostMapping("/edit")
+    public String updateItem(Long id, String title, Integer price){ //@RequestParam은 생략가능
+        itemService.updateItem(id, title, price);
+        return "redirect:/list";
+    }
 }

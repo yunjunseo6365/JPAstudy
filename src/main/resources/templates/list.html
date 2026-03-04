@@ -19,7 +19,14 @@
                 <a th:href="@{ '/detail/' + ${i.id} }" th:text="${i.title}"></a>
             </h4>
             <p th:text="${i.price} + ' 원' " >7억</p>
+            <div>
+                <a th:href="@{ '/edit/' + ${i.id} }">수정</a>
+            </div>
+            <div>
+                <a th:href="@{ '/delete/' + ${i.id} }">삭제</a>
+            </div>
         </div>
+
     </div>
 
 </body>
