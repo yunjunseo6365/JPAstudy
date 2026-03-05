@@ -1,4 +1,4 @@
-package com.junseo.shop;
+package com.junseo.shop.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

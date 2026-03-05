@@ -21,13 +21,31 @@
             <p th:text="${i.price} + ' 원' " >7억</p>
             <div>
                 <a th:href="@{ '/edit/' + ${i.id} }">수정</a>
-            </div>
-            <div>
-                <a th:href="@{ '/delete/' + ${i.id} }">삭제</a>
+                <span th:onclick="fetch('/item?id=[[${i.id}]]', {method : 'DELETE'})
+                    .then(r => r.text())
+                    .then(() => {
+                        location.reload();
+                    })">삭제</span>
             </div>
         </div>
-
     </div>
+
+    <button class="btn">버튼</button>
+
+    <script>
+        document.querySelectorAll('.btn')[0].addEventListener('click', function () {
+            fetch('/item', {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({name : 'kim', age : 15})
+            })
+        })
+        /* 서버로 데이터 보내고 싶으면 <form> , AJAX body
+        짧은건 query string(fetch('/test1?name=kim&age=15'))으로 URL에 숨겨서 전송 가능 -> Controller에서 받을땐 @RequestParam String ~~~
+        */
+    </script>
 
 </body>
 </html>

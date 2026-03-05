@@ -1,15 +1,12 @@
-package com.junseo.shop;
+package com.junseo.shop.notice;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 @ToString // Lombok

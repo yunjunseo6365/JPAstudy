@@ -1,4 +1,4 @@
-package com.junseo.shop;
+package com.junseo.shop.notice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

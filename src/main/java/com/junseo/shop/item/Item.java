@@ -1,4 +1,4 @@
-package com.junseo.shop;
+package com.junseo.shop.item;
 
 import jakarta.persistence.*;
 import lombok.Getter;

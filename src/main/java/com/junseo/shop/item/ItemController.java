@@ -1,11 +1,13 @@
-package com.junseo.shop;
+package com.junseo.shop.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -119,5 +121,17 @@ public class ItemController {
     public String updateItem(Long id, String title, Integer price){ //@RequestParam은 생략가능
         itemService.updateItem(id, title, price);
         return "redirect:/list";
+    }
+
+//    @PostMapping("/test1")
+//    public String test1(@RequestBody Map<String, Object> body){ //@RequestParam은 생략가능
+//        System.out.println(body.get("name"));
+//        return "redirect:/list";
+//    }
+
+    @DeleteMapping("/item")
+    public ResponseEntity<String> deleteItem(@RequestParam Long id){
+         itemRepository.deleteById(id);
+        return ResponseEntity.status(200).body("삭제완료");
     }
 }

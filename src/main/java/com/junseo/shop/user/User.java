@@ -1,4 +1,4 @@
-package com.junseo.shop;
+package com.junseo.shop.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
