@@ -2,6 +2,7 @@ package com.junseo.shop.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -133,5 +134,13 @@ public class ItemController {
     public ResponseEntity<String> deleteItem(@RequestParam Long id){
          itemRepository.deleteById(id);
         return ResponseEntity.status(200).body("삭제완료");
+    }
+
+    // BCryptPasswordEncoder 출력해보기!
+    @GetMapping("/test2")
+    public String bcryptPassword(){
+        var result = new BCryptPasswordEncoder().encode("1234aaa");
+        System.out.println(result); // salt부분과 hashing 부분 합쳐져서 만들어짐
+        return "redirect:/list";
     }
 }
