@@ -9,21 +9,17 @@
     <title>Document</title>
 </head>
 <body>
-
 <div th:replace="~{ nav.html::navbar }"></div>
 
-<div class="detail">
-    <h4>상세페이지</h4>
-    <img src="https://placehold.co/300">
-    <h4 th:text="${data.title}">금도금 바지</h4>
-    <p th:text="${data.price + ' 원'}">7억</p>
-    
-    <!-- 작성자 정보가 있을 때만 보여줍니다. -->
-    <div th:if="${data.member != null}">
-        <span>작성자 아이디 : </span>
-        <span th:text="${data.member.username}">아이디</span>
-    </div>
-</div>
+<h4>로그인</h4>
+<div>
+    <h4 th:if="${param.error}">아이디와 비번을 확인해주세요</h4>  <!-- th:if 는 오른쪽 변수에 뭐 있으면 HTML 보여주세요. -->
+</div>                                      <!-- param에는 현재 URL의 query String이 담겨있음 -->
+<form action="/login" method="POST">
+    <input name="username">
+    <input name="password" type="password">
+    <button type="submit">전송</button>
+</form>
 
 </body>
 </html>

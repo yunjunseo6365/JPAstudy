@@ -1,7 +1,11 @@
 package com.junseo.shop.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +33,11 @@ public class ItemController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        List<Item> result = itemService.viewList(); // 테이블 모든 데이터 가져옴, List자료형으로 가져옴(Object 형태임)
-        model.addAttribute("items", result);
-        return "list.html";
+//        List<Item> result = itemService.viewList(); // 테이블 모든 데이터 가져옴, List자료형으로 가져옴(Object 형태임)
+//
+//        model.addAttribute("items", result);
+//        return "list.html";
+        return "redirect:/list/page/1";
     }
 
     @GetMapping("/write")
@@ -64,13 +70,14 @@ public class ItemController {
 //    }
 
     @PostMapping("/add")
-    public String addPost(String title, Integer price){
-
+    public String addPost(@ModelAttribute Item item, Authentication auth){
+        // 현재 로그인한 사용자의 정보 가져오기
+        String username = auth.getName();
 //        Item item = new Item();
 //        item.setTitle(title);
 //        item.setPrice(price);
 //        itemRepository.save(item); service 레이어로 뺌
-        itemService.saveItem(title, price);
+        itemService.saveItem(item.getTitle(), item.getPrice(), username); // 작성자 추가
         return "redirect:/list";
     }
 
@@ -108,14 +115,33 @@ public class ItemController {
 
     // 수정폼으로 이동 showUpdateForm
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable Long id, Model model) {
-        Optional<Item> result = itemService.itemId(id);
-        if (result.isPresent()) {
-            model.addAttribute("item", result.get());
-            return "edit.html";
-        } else {
-            return "redirect:/list";
+    public String showUpdateForm(@PathVariable Long id, Model model, Authentication auth) {
+        // 1. 로그인 여부 확인
+        if (auth == null || !auth.isAuthenticated()) {
+            return "redirect:/login"; // 로그인하지 않았다면 로그인 페이지로
         }
+        // 2. 아이템 조회
+        Optional<Item> result = itemService.itemId(id);
+
+        // 3. 아이템이 존재하지 않는 경우
+        if (result.isEmpty()) {
+            // 존재하지 않는 아이템에 접근 시 목록 페이지로 보냅니다.
+            return "redirect:/list?error=not_found";
+        }
+
+        // 4. 아이템이 존재하는 경우, 객체를 꺼내서 작성자 확인
+        Item item = result.get();
+
+        // 5. 작성자 본인 확인
+        // 아이템에 작성자 정보가 없거나, 현재 로그인한 사용자와 아이템 작성자가 다른 경우
+        if (item.getMember() == null || !item.getMember().getUsername().equals(auth.getName())) {
+            // 권한이 없는 경우 목록 페이지로 보냅니다.
+            return "redirect:/list?error=permission_denied";
+        }
+
+        // 6. 모든 검사를 통과한 경우, 모델에 데이터를 담아 수정 페이지로 이동
+        model.addAttribute("item", item);
+        return "edit.html";
     }
 
     @PostMapping("/edit")
@@ -142,5 +168,14 @@ public class ItemController {
         var result = new BCryptPasswordEncoder().encode("1234aaa");
         System.out.println(result); // salt부분과 hashing 부분 합쳐져서 만들어짐
         return "redirect:/list";
+    }
+
+    @GetMapping("/list/page/{abc}")
+    public String getListPage(Model model, @PathVariable Integer abc) {
+        System.out.println(abc);
+        Page<Item> result = itemRepository.findPageBy(PageRequest.of(abc-1,3));
+        // result.getTotalPages(); // 전체 페이지 개수
+        model.addAttribute("items", result);
+        return "list.html";
     }
 }

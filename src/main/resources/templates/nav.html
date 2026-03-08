@@ -1,6 +1,18 @@
-<div class="nav" th:fragment="navbar">
+<div class="nav" th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml">
     <a class="logo">SpringMall</a>
     <a href="/list">List</a>
     <a href="/write">Write</a>
-    <a href="/register">register</a>
+    <span sec:authorize="isAnonymous()">
+        <a href="/login">login</a>
+    </span>
+    <span sec:authorize="isAnonymous()">
+        <a href="/register">register</a>
+    </span>
+    <!-- 로그인한 사용자에게만 보임 -->
+    <div sec:authorize="isAuthenticated()">
+        <span sec:authentication="principal.username">사용자ID</span>님
+        <form action="/logout" method="POST" style="display:inline">
+            <button type="submit">로그아웃</button>
+        </form>
+    </div>
 </div>
