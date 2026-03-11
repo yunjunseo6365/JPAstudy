@@ -22,6 +22,7 @@ public class ItemController {
     // step 2. 원하는 클래스에 Repository 등록 및 @RequiredArgsConstructor추가 혹은 생성자에 선언
     private final ItemRepository itemRepository;
     private final ItemService itemService;
+    private final S3Service s3Service;
 
 
     // lombok 안쓰면 이렇게 써야함. Dependency Injection
@@ -177,5 +178,14 @@ public class ItemController {
         // result.getTotalPages(); // 전체 페이지 개수
         model.addAttribute("items", result);
         return "list.html";
+    }
+    // AWS s3 Presigned-url 이미지 업로드
+    @GetMapping("/presigned-url")
+    @ResponseBody
+    public String getURL(@RequestParam String filename) {
+        System.out.println(filename);
+        var result = s3Service.createPresignedUrl("test/" + filename);
+        System.out.println(result);
+        return result;
     }
 }

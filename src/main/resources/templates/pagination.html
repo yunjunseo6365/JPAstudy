@@ -2,22 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<nav th:fragment="pagination(paging)">
+<nav th:fragment="pagination(paging)" th:if="${paging.totalPages > 1}">
     <ul class="pagination justify-content-center">
 
-        <!-- 페이지 번호 반복문 -->
-        <!--
-           #numbers.sequence(1, paging.totalPages) : 1부터 전체 페이지 수까지 숫자 리스트 생성
-           paging.totalPages : 전체 페이지 수 (Page 객체가 제공하는 메서드)
+        <!-- 
+           #numbers.sequence(1, paging.totalPages)
+           - 1부터 전체 페이지 수(totalPages)까지의 숫자 리스트를 생성합니다.
+             (예: 전체 5페이지면 1, 2, 3, 4, 5 리스트 생성)
         -->
-        <li class="page-item" th:each="num : ${#numbers.sequence(1, paging.totalPages)}"
-            th:classappend="${num == paging.number + 1} ? 'active'">
-
-            <!--
-               th:href="@{/list/page/{page}(page=${num})}"
-               - /list/page/1, /list/page/2 ... 형태로 링크 생성
+        <li class="page-item" th:each="page : ${#numbers.sequence(1, paging.totalPages)}"
+            th:classappend="${page == paging.number + 1} ? 'active'">
+            <!-- 
+               th:href="@{/list/page/{page}(page=${page})}"
+               - page 변수(1, 2, 3...)를 URL 경로에 바로 사용합니다.
             -->
-            <a class="page-link" th:text="${num}" th:href="@{/list/page/{page}(page=${num})}"></a>
+            <a class="page-link" th:text="${page}" th:href="@{/list/page/{page}(page=${page})}"></a>
         </li>
 
     </ul>
